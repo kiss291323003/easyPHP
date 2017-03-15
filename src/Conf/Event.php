@@ -9,7 +9,6 @@
 namespace Conf;
 
 
-use App\Vendor\SysConst;
 use Core\AbstractInterface\AbstractEvent;
 use Core\Component\Di;
 use Core\Http\Request;
@@ -20,7 +19,6 @@ class Event extends AbstractEvent
     function frameInitialize()
     {
         // TODO: Implement frameInitialize() method.
-        $this->setDb();
     }
 
     function onRequest(Request $request, Response $response)
@@ -34,12 +32,6 @@ class Event extends AbstractEvent
     }
 
     private function setDb(){
-        Di::getInstance()->set(SysConst::DB,\MysqliDb::class,array(
-            "127.0.0.1",
-            "root",
-            "root",
-            "sdyc"
-        ));
-
+       
     }
 }
