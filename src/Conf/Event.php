@@ -26,12 +26,14 @@ class Event extends AbstractEvent
         // TODO: Implement onRequest() method.
     }
 
+    function onDispatcher(Request $request, Response $response, $targetControllerClass, $targetAction)
+    {
+        // TODO: Implement onDispatcher() method.
+    }
+
     function afterResponse(Request $request, Response $response)
     {
         // TODO: Implement afterResponse() method.
     }
 
-    private function setDb(){
-       
-    }
 }

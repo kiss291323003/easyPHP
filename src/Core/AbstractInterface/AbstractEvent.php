@@ -23,5 +23,6 @@ abstract class AbstractEvent
     }
     abstract function frameInitialize();
     abstract function onRequest(Request $request,Response $response);
+    abstract function onDispatcher(Request $request,Response $response,$targetControllerClass,$targetAction);
     abstract function afterResponse(Request $request,Response $response);
 }
