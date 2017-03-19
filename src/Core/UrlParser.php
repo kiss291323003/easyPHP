@@ -9,7 +9,8 @@
 	namespace Core;
 
 
-	use Core\Http\Request;
+
+    use Core\Http\Request\Request;
 
 	class UrlParser
 	{

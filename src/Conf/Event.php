@@ -10,9 +10,8 @@ namespace Conf;
 
 
 use Core\AbstractInterface\AbstractEvent;
-use Core\Component\Di;
-use Core\Http\Request;
-use Core\Http\Response;
+use Core\Http\Request\Request;
+use Core\Http\Response\Response;
 
 class Event extends AbstractEvent
 {

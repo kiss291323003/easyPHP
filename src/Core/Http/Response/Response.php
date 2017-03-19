@@ -2,15 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: yf
- * Date: 2017/2/6
- * Time: 下午6:43
+ * Date: 2017/3/18
+ * Time: 下午8:22
  */
 
-namespace Core\Http;
+namespace Core\Http\Response;
 
 
 use Conf\Event;
 use Core\Dispatcher;
+use Core\Http\Request\Request;
+use Core\Http\Status;
 
 class Response
 {
@@ -38,7 +40,7 @@ class Response
         return $this->isEndResponse;
     }
     function sendHttpStatus($code) {
-         $status = array(
+        $status = array(
             // Informational 1xx
             100 => 'Continue',
             101 => 'Switching Protocols',
@@ -136,11 +138,8 @@ class Response
         Event::getInstance()->onRequest($request,$response);
         Dispatcher::getInstance()->dispatch($request,$response);
     }
-    function setCookie($name,$value,$expire,$path = '/',$domain = null,$secure = 0){
-        Cookie::setCookie($name,$value,$expire,$path,$domain,$secure);
-    }
-    function unsetCookie($name){
-        Cookie::unsetCookie($name);
+    function cookie(){
+        return Cookie::getInstance();
     }
     function sendHeader($key,$val){
         header($key .':'.$val);

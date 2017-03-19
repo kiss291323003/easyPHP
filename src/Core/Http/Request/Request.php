@@ -2,15 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: yf
- * Date: 2017/2/6
- * Time: 下午6:43
+ * Date: 2017/3/18
+ * Time: 下午8:23
  */
 
-namespace Core\Http;
+namespace Core\Http\Request;
 
-
-use Core\Utility\Validate\Rules;
-use Core\Utility\Validate\Verify;
 
 class Request
 {
@@ -59,8 +56,8 @@ class Request
     function file(){
         return new File();
     }
-    function getCookie($name = null){
-        return Cookie::getCookie($name);
+    function cookie(){
+        return Cookie::getInstance();
     }
     function session(){
         return Session::getInstance();
