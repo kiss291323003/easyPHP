@@ -66,7 +66,6 @@ class Core
         Event::getInstance()->frameInitialize();
         $this->registerErrorHandler();
         $this->registerExceptionHandler();
-        $this->registerShutDownHandler();
         return $this;
     }
 
