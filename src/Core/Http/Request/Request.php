@@ -9,6 +9,9 @@
 namespace Core\Http\Request;
 
 
+use Core\Utility\Validate\Rules;
+use Core\Utility\Validate\Verify;
+
 class Request
 {
     protected static $instance;
