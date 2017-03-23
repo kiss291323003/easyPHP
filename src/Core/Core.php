@@ -122,7 +122,7 @@ class Core
         $dir = Di::getInstance()->get(SysConst::APPLICATION_DIR);
         if(empty($dir)){
             $dir = "App";
-            Di::getInstance()->set(SysConst::APPLICATION_DIR,$$dir);
+            Di::getInstance()->set(SysConst::APPLICATION_DIR,$dir);
         }
         $prefix = $dir;
         AutoLoader::getInstance()->addNamespace($prefix,$dir);
