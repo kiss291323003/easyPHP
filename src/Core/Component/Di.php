@@ -72,10 +72,8 @@ class Di
                 $ins =  $reflection->newInstanceArgs ( $result['params'] );
                 $this->set($key,$ins);
                 return $ins;
-            }else if(is_string($result['obj'])){
-                return $result['obj'];
             }else{
-                return $result;
+                return $result['obj'];
             }
         }else{
             return null;
