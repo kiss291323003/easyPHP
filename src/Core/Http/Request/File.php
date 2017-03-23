@@ -49,7 +49,7 @@ class File
                 $name = $this->name();
             }
             $realPath = $path."/$name";
-            if (!(rename($this->tempName(), $realPath) && file_exists($realPath))) { //移动失败
+            if (!(move_uploaded_file($this->tempName(), $realPath) && file_exists($realPath))) { //移动失败
                 trigger_error("save upload file : $realPath fail");
             }else{
                 return $realPath;
