@@ -64,8 +64,8 @@ class Core
      function frameWorkInitialize(){
         $this->defineSysConst();
         $this->registerAutoLoader();
-        Event::getInstance()->frameInitialize();
         $this->setDefaultAppDirectory();
+        Event::getInstance()->frameInitialize();
         $this->registerErrorHandler();
         $this->registerExceptionHandler();
         return $this;
