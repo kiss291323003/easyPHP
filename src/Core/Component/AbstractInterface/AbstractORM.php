@@ -12,7 +12,7 @@ namespace Core\Component\AbstractInterface;
 abstract class AbstractORM{
     /*
      * 注意   若想实现类似 json_encode(class) 自动转数组
-     *    在继承类中   对应的变量名称请为public属性
+     *    在继承类中   对应的变量名称请为public属性或者直接不定义，MAP会自动定义
      */
     private $ORMMap = array();
     /*
