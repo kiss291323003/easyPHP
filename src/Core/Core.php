@@ -52,7 +52,7 @@ class Core
         $request = Request::getInstance();
         $response = Response::getInstance();
         Event::getInstance()->onRequest($request,$response);
-        $this->setDefaultAppDirectory();
+
         Dispatcher::getInstance()->dispatch($request,$response);
         $response->end();
         Event::getInstance()->afterResponse($request,$response);
@@ -65,6 +65,7 @@ class Core
         $this->defineSysConst();
         $this->registerAutoLoader();
         Event::getInstance()->frameInitialize();
+        $this->setDefaultAppDirectory();
         $this->registerErrorHandler();
         $this->registerExceptionHandler();
         return $this;
