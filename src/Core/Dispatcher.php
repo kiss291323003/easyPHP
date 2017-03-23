@@ -142,6 +142,7 @@ class Dispatcher
             if($router instanceof AbstractRouter){
                 $is = $router->isCache();
                 if($is){
+                    $is = $is.".{$this->appDirectory}";
                     if(file_exists($is)){
                         $dispatcherData = require_once "{$is}";
                         $dispatcherData = unserialize($dispatcherData);
