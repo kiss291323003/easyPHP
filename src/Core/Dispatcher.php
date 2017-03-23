@@ -24,6 +24,7 @@ use Core\Component\RouteCollector;
 class Dispatcher
 {
     protected static $instance;
+    private $appDirectory;
     /*
      * Core Instance is a singleTon in a request lifecycle
      * @return Dispatcher instance
@@ -34,6 +35,11 @@ class Dispatcher
         }
         return self::$instance;
     }
+    function __construct()
+    {
+        $this->appDirectory = Di::getInstance()->get(SysConst::APPLICATION_DIR);
+    }
+
     public function dispatch(Request $request,Response $response){
         if($response->isEndResponse()){
             return;
@@ -63,7 +69,7 @@ class Dispatcher
         //去除为fastRouter预留的左边斜杠
         $pathInfo = ltrim($pathInfo,"/");
         $list = explode("/",$pathInfo);
-        $controllerNameSpacePrefix = "App\\Controller";
+        $controllerNameSpacePrefix = "{$this->appDirectory}\\Controller";
         $actionName = null;
         $finalClass = null;
         $controlMaxDepth = Di::getInstance()->get(SysConst::CONTROLLER_MAX_DEPTH);
@@ -131,7 +137,7 @@ class Dispatcher
             /*
                  * if exit Router class in App directory
             */
-            $ref = new \ReflectionClass("App\\Router");
+            $ref = new \ReflectionClass("{$this->appDirectory}\\Router");
             $router = $ref->newInstance();
             if($router instanceof AbstractRouter){
                 $is = $router->isCache();

@@ -52,6 +52,7 @@ class Core
         $request = Request::getInstance();
         $response = Response::getInstance();
         Event::getInstance()->onRequest($request,$response);
+        $this->setDefaultAppDirectory();
         Dispatcher::getInstance()->dispatch($request,$response);
         $response->end();
         Event::getInstance()->afterResponse($request,$response);
@@ -83,8 +84,6 @@ class Core
         $loader->addNamespace("FastRoute","Core/Vendor/FastRoute");
         $loader->addNamespace("SuperClosure","Core/Vendor/SuperClosure");
         $loader->addNamespace("PhpParser","Core/Vendor/PhpParser");
-        //添加应用目录
-        $loader->addNamespace("App","App");
     }
 
     private function defineSysConst(){
@@ -117,6 +116,12 @@ class Core
             set_exception_handler(function(\Exception $exception)use($handler){
                 $handler->handler($exception);
             });
+        }
+    }
+    private function setDefaultAppDirectory(){
+        $dir = Di::getInstance()->get(SysConst::APPLICATION_DIR);
+        if(empty($dir)){
+            Di::getInstance()->set(SysConst::APPLICATION_DIR,"App");
         }
     }
 }

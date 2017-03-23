@@ -21,4 +21,5 @@ class SysConst
     const DI_SESSION_HANDLER = 'DI_SESSION_HANDLER';
 
     const CONTROLLER_MAX_DEPTH = 'CONTROLLER_MAX_DEPTH';
+    const APPLICATION_DIR = 'APPLICATION_DIR';//定义应用加载目录（以便支持对域名部署不同应用）
 }
