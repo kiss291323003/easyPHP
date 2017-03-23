@@ -121,7 +121,10 @@ class Core
     private function setDefaultAppDirectory(){
         $dir = Di::getInstance()->get(SysConst::APPLICATION_DIR);
         if(empty($dir)){
-            Di::getInstance()->set(SysConst::APPLICATION_DIR,"App");
+            $dir = "App";
+            Di::getInstance()->set(SysConst::APPLICATION_DIR,$$dir);
         }
+        $prefix = $dir;
+        AutoLoader::getInstance()->addNamespace($prefix,$dir);
     }
 }
