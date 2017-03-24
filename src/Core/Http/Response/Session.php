@@ -17,11 +17,13 @@ class Session
     private static $self_instance;
     function __construct()
     {
-        $handler = Di::getInstance()->get(SysConst::DI_SESSION_HANDLER);
-        if($handler instanceof \SessionHandlerInterface){
-            session_set_save_handler($handler,true);
+        if(!isset($_SESSION)){
+            $handler = Di::getInstance()->get(SysConst::DI_SESSION_HANDLER);
+            if($handler instanceof \SessionHandlerInterface){
+                session_set_save_handler($handler,true);
+            }
+            $this->startSession();
         }
-        $this->startSession();
     }
     static function getInstance(){
         if(isset(self::$self_instance)){
