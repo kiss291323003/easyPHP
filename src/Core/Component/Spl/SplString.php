@@ -16,6 +16,9 @@ class SplString
     {
         $this->rawString = $rawString;
     }
+    function setString($string){
+        $this->rawString = (String)$string;
+    }
     function split($length = 1){
         return str_split($this->rawString,$length);
     }
@@ -125,4 +128,5 @@ class SplString
         // TODO: Implement __toString() method.
         return (String)$this->rawString;
     }
+
 }
