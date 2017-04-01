@@ -10,7 +10,7 @@ namespace Core\Component;
 
 
 use Core\AbstractInterface\ErrorHandlerInterface;
-use Core\Component\Object\Error;
+use Core\Component\Spl\Error;
 
 class ErrorHandler implements ErrorHandlerInterface
 {
@@ -23,10 +23,12 @@ class ErrorHandler implements ErrorHandlerInterface
     function display(Error $error)
     {
         // TODO: Implement display() method.
+        echo $error;
     }
 
     function log(Error $error)
     {
         // TODO: Implement log() method.
+        Logger::log($error);
     }
 }

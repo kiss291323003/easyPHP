@@ -10,7 +10,7 @@ namespace Core\AbstractInterface;
 
 
 
-use Core\Component\Object\Error;
+use Core\Component\Spl\Error;
 
 interface ErrorHandlerInterface
 {
