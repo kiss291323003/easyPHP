@@ -3,10 +3,10 @@
  * Created by PhpStorm.
  * User: yf
  * Date: 2017/4/1
- * Time: 下午12:20
+ * Time: 下午2:52
  */
 
-namespace Core\Utility\Spl;
+namespace Core\Component\Spl;
 
 
 class SplString
