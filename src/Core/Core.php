@@ -15,7 +15,7 @@ use Core\AbstractInterface\ErrorHandlerInterface;
 use Core\AbstractInterface\ExceptionHandlerInterface;
 use Core\Component\Di;
 use Core\Component\ErrorHandler;
-use Core\Component\Spl\Error;
+use Core\Component\Spl\SplError;
 use Core\Component\SysConst;
 use Core\Http\Request\Request;
 use Core\Http\Response\Response;
@@ -95,7 +95,7 @@ class Core
         $conf = Config::getInstance()->getConf("DEBUG");
         if($conf['ENABLE'] == true){
             set_error_handler(function($errorCode, $description, $file = null, $line = null, $context = null)use($conf){
-                $error = new Error($errorCode, $description, $file, $line, $context);
+                $error = new SplError($errorCode, $description, $file, $line, $context);
                 $errorHandler = Di::getInstance()->get(SysConst::DI_ERROR_HANDLER);
                 if(!is_a($errorHandler,ErrorHandlerInterface::class)){
                     $errorHandler = new ErrorHandler();
