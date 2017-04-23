@@ -10,6 +10,7 @@ namespace Core\AbstractInterface;
 
 
 
+use Core\Component\Spl\SplError;
 use Core\Http\Request\Request;
 use Core\Http\Response\Response;
 
@@ -26,4 +27,5 @@ abstract class AbstractEvent
     abstract function onRequest(Request $request,Response $response);
     abstract function onDispatcher(Request $request,Response $response,$targetControllerClass,$targetAction);
     abstract function afterResponse(Request $request,Response $response);
+    abstract function onFatalError(SplError $error,$debugTrace);
 }

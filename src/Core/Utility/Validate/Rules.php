@@ -28,6 +28,7 @@ class Rules
     const RULE_NOT_EMPTY = 'notEmpty';
 
     protected $rules = array();
+
     function add($column,$rule = null,$alertMsg = null,$params = null){
         if($rule == null){
             $this->rules[$column] = null;
@@ -39,6 +40,7 @@ class Rules
         }
         return $this;
     }
+
     function getRules(){
         return $this->rules;
     }

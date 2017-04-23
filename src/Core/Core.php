@@ -15,6 +15,7 @@ use Core\AbstractInterface\ErrorHandlerInterface;
 use Core\AbstractInterface\ExceptionHandlerInterface;
 use Core\Component\Di;
 use Core\Component\ErrorHandler;
+use Core\Component\Logger;
 use Core\Component\Spl\SplError;
 use Core\Component\SysConst;
 use Core\Http\Request\Request;
@@ -67,6 +68,7 @@ class Core
         $this->setDefaultAppDirectory();
         Event::getInstance()->frameInitialize();
         $this->registerErrorHandler();
+        $this->registerFatalErrorHandler();
         $this->registerExceptionHandler();
         return $this;
     }
@@ -110,7 +112,18 @@ class Core
             });
         }
     }
-
+    private function registerFatalErrorHandler(){
+        $conf = Config::getInstance()->getConf("DEBUG");
+        if($conf['ENABLE']){
+            register_shutdown_function(function(){
+                $error = error_get_last();
+                if(!empty($error)){
+                    $error = new SplError(E_ERROR,$error['message'],$error['file'],$error['line']);
+                    var_dump(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT));
+                }
+            });
+        }
+    }
     private function registerExceptionHandler(){
         $handler = Di::getInstance()->get(SysConst::DI_EXCEPTION_HANDLER);
         if($handler instanceof  ExceptionHandlerInterface){
