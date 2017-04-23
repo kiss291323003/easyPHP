@@ -14,10 +14,8 @@
 
 	class UrlParser
 	{
-        static public function pathInfo(Request $httpRequest = null){
-            if($httpRequest === null){
-                $httpRequest = Request::getInstance();
-            }
+        static public function pathInfo(){
+            $httpRequest = Request::getInstance();
             //优先检测pathinfo模式  否则用uri路径覆盖
             $pathInfo = $httpRequest->getServer("REDIRECT_URL") ? $httpRequest->getServer("REDIRECT_URL") : '/';
             //反编码
@@ -37,4 +35,5 @@
             }
             return $pathInfo;
         }
+
 	}
