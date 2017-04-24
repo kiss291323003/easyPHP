@@ -130,7 +130,7 @@ class SplString
         return $label === false ? false : true;
     }
 
-    function betweeInnStr($startStr,$endStr){
+    function betweenInStr($startStr,$endStr){
         $st =stripos($this->rawString,$startStr);
         $ed =stripos($this->rawString,$endStr);
         if(($st==false||$ed==false)||$st>=$ed) {
