@@ -129,6 +129,31 @@ class SplString
         }
         return $label === false ? false : true;
     }
+
+    function betweeInnStr($startStr,$endStr){
+        $st =stripos($this->rawString,$startStr);
+        $ed =stripos($this->rawString,$endStr);
+        if(($st==false||$ed==false)||$st>=$ed) {
+            $this->rawString = '';
+        }else {
+            $this->rawString = substr($this->rawString,($st+1),($ed-$st-1));
+        }
+        return $this;
+    }
+
+    function regex($regex,$rawReturn = false){
+        preg_match($regex,$this->rawString,$result);
+        if(!empty($result)){
+            if($rawReturn){
+                return $result;
+            }else{
+                return $result[0];
+            }
+        }else{
+            return null;
+        }
+    }
+
     function __toString()
     {
         // TODO: Implement __toString() method.
