@@ -19,9 +19,19 @@ class Cookie
         return self::$instance;
     }
     function setCookie($name,$value,$expire,$path = '/',$domain = null,$secure = 0){
-        setcookie($name,$value,$expire,$path,$domain,$secure);
+        if(Response::getInstance()->isEndResponse()){
+            return false;
+        }else{
+            setcookie($name,$value,$expire,$path,$domain,$secure);
+            return true;
+        }
     }
     function unsetCookie($name){
-        self::setCookie($name,'',time()-100);
+        if(Response::getInstance()->isEndResponse()){
+            return false;
+        }else{
+            $this->setCookie($name,'',time()-100);
+            return true;
+        }
     }
 }
