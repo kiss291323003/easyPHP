@@ -10,6 +10,7 @@ namespace Core\Http\Request;
 
 
 use Core\Utility\Validate\Rules;
+use Core\Utility\Validate\Validate;
 use Core\Utility\Validate\Verify;
 
 class Request
@@ -79,8 +80,7 @@ class Request
     /*
 	 * @return Validate
 	*/
-    function getRequestParamWithVerify(Rules $rules){
-        $data = $this->getRequestParam();
-        return new Verify($data,$rules);
+    function getRequestParamWithVerify(array $rules){
+        return (new Validate($this->getRequestParam(),$rules))->validate();
     }
 }
