@@ -63,6 +63,18 @@ class SplString
         $this->rawString =  strtoupper($str);//转换为大写
         return $this;
     }
+    function unicodeToUtf8()
+    {
+        $this->rawString =  preg_replace_callback(
+            '/\\\\u([0-9a-f]{4})/i',
+            create_function(
+                '$matches',
+                'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'
+            ),
+            $this->rawString
+        );
+    }
+
 
     function explode($separator){
         return new SplArray(explode($separator,$this->rawString));
