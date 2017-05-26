@@ -9,48 +9,42 @@
 namespace Conf;
 
 
+use Core\Component\Spl\SplArray;
+
 class Config
 {
-    protected static $instance;
-    private $conf;
-
+    private static $instance;
+    protected $conf;
     function __construct()
     {
-        $this->init();
+        $conf = $this->sysConf()+$this->userConf();
+        $this->conf = new SplArray($conf);
     }
-    /*
-     * Core Instance is a singleTon in a request lifecycle
-     * @return Config instance
-     */
     static function getInstance(){
         if(!isset(self::$instance)){
             self::$instance = new static();
         }
         return self::$instance;
     }
-
-    function getConf($key){
-        if(isset($this->conf[$key])){
-            return $this->conf[$key];
-        }else{
-            return null;
-        }
+    function getConf($keyPath){
+        return $this->conf->get($keyPath);
     }
-    function setConf($key,$val){
-        $this->conf[$key] = $val;
+    /*
+            * 在server启动以后，无法动态的去添加，修改配置信息（进程数据独立）
+    */
+    function setConf($keyPath,$data){
+        $this->conf->set($keyPath,$data);
     }
-
-    private function init(){
-        $sysConf = array(
+    private function sysConf(){
+        return array(
             "DEBUG"=>array(
                 "LOG"=>1,
                 "DISPLAY_ERROR"=>1,
                 "ENABLE"=>false,
             ),
         );
-        $userConf = array(
-
-        );
-        $this->conf = $sysConf + $userConf;
+    }
+    private function userConf(){
+        return array();
     }
 }
