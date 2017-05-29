@@ -14,7 +14,7 @@ abstract class SplBean implements \JsonSerializable
     private $beanColumns = array();
     private $propertyList = array();
 
-    abstract function initialize();
+    abstract protected function initialize();
     final function __construct(array $data = array())
     {
         $this->initialize();
@@ -72,7 +72,7 @@ abstract class SplBean implements \JsonSerializable
         return $result;
     }
 
-    final function __toString()
+    function __toString()
     {
         // TODO: Implement __toString() method.
         return json_encode($this->jsonSerialize(),JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);

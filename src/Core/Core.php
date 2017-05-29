@@ -68,7 +68,6 @@ class Core
         $this->setDefaultAppDirectory();
         Event::getInstance()->frameInitialize();
         $this->registerErrorHandler();
-        $this->registerFatalErrorHandler();
         $this->registerExceptionHandler();
         return $this;
     }
@@ -97,7 +96,12 @@ class Core
         $conf = Config::getInstance()->getConf("DEBUG");
         if($conf['ENABLE'] == true){
             set_error_handler(function($errorCode, $description, $file = null, $line = null, $context = null)use($conf){
-                $error = new SplError($errorCode, $description, $file, $line, $context);
+                $error = new SplError();
+                $error->setErrorCode($errorCode);
+                $error->setDescription($description);
+                $error->setFile($file);
+                $error->setLine($line);
+                $error->setContext($context);
                 $errorHandler = Di::getInstance()->get(SysConst::DI_ERROR_HANDLER);
                 if(!is_a($errorHandler,ErrorHandlerInterface::class)){
                     $errorHandler = new ErrorHandler();
@@ -108,18 +112,6 @@ class Core
                 }
                 if($conf['LOG'] == true){
                     $errorHandler->log($error);
-                }
-            });
-        }
-    }
-    private function registerFatalErrorHandler(){
-        $conf = Config::getInstance()->getConf("DEBUG");
-        if($conf['ENABLE']){
-            register_shutdown_function(function(){
-                $error = error_get_last();
-                if(!empty($error)){
-                    $error = new SplError(E_ERROR,$error['message'],$error['file'],$error['line']);
-                    var_dump(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT));
                 }
             });
         }

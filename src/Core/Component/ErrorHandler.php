@@ -11,6 +11,7 @@ namespace Core\Component;
 
 use Core\AbstractInterface\ErrorHandlerInterface;
 use Core\Component\Spl\SplError;
+use Core\Http\Response\Response;
 
 class ErrorHandler implements ErrorHandlerInterface
 {
@@ -23,7 +24,7 @@ class ErrorHandler implements ErrorHandlerInterface
     function display(SplError $error)
     {
         // TODO: Implement display() method.
-        echo $error;
+        Response::getInstance()->write($error->__toString());
     }
 
     function log(SplError $error)
