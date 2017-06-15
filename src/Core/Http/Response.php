@@ -64,10 +64,10 @@ class Response extends HttpResponse
                 $obj = json_encode($obj,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
             }
             $this->getBody()->write($obj);
-            return $this;
+            return true;
         }else{
             trigger_error("response has end");
-            return $this;
+            return false;
         }
     }
     function writeJson($result,$statusCode = 200,$msg = ''){
@@ -84,7 +84,7 @@ class Response extends HttpResponse
             return true;
         }else{
             trigger_error("response has end");
-            return $this;
+            return false;
         }
     }
     function redirect($url){
@@ -118,9 +118,10 @@ class Response extends HttpResponse
                 $temp .=" HttpOnly;";
             }
             $this->withAddedHeader('Set-Cookie',$temp);
+            return true;
         }else{
             trigger_error("response has end");
-            return $this;
+            return false;
         }
 
     }
