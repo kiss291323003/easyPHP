@@ -28,13 +28,4 @@
             }
             return $basePath;
         }
-        static public function Uri(){
-            $url  = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '')
-                . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-            $uri = new Uri($url);
-            if(isset($_SERVER['PHP_AUTH_USER'])){
-                $uri->withUserInfo($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']);
-            }
-            return $uri;
-        }
 	}

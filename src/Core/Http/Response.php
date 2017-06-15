@@ -52,12 +52,22 @@ class Response extends HttpResponse
     function isEndResponse(){
         return $this->isEndResponse;
     }
-    function write($str){
+    function write($obj){
         if(!$this->isEndResponse()){
-            $this->getBody()->write($str);
+            if(is_object($obj)){
+                if(method_exists($obj,"__toString")){
+                    $obj = $obj->__toString();
+                }else{
+                    $obj = json_encode($obj,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+                }
+            }else if(is_array($obj)){
+                $obj = json_encode($obj,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+            }
+            $this->getBody()->write($obj);
             return $this;
         }else{
             trigger_error("response has end");
+            return $this;
         }
     }
     function writeJson($result,$statusCode = 200,$msg = ''){
@@ -74,6 +84,7 @@ class Response extends HttpResponse
             return true;
         }else{
             trigger_error("response has end");
+            return $this;
         }
     }
     function redirect($url){
@@ -82,7 +93,7 @@ class Response extends HttpResponse
             $this->withStatus(Status::CODE_MOVED_TEMPORARILY);
             $this->withHeader('Location',$url);
         }else{
-            throw new \RuntimeException("response has end");
+            trigger_error("response has end");
         }
     }
     public function setCookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null){
@@ -109,6 +120,7 @@ class Response extends HttpResponse
             $this->withAddedHeader('Set-Cookie',$temp);
         }else{
             trigger_error("response has end");
+            return $this;
         }
 
     }
