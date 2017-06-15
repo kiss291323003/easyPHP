@@ -11,8 +11,8 @@ namespace Core\AbstractInterface;
 
 
 use Core\Component\Spl\SplError;
-use Core\Http\Request\Request;
-use Core\Http\Response\Response;
+use Core\Http\Request;
+use Core\Http\Response;
 
 abstract class AbstractEvent
 {

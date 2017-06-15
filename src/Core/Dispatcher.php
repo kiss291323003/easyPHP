@@ -9,15 +9,14 @@
 namespace Core;
 
 
-use Conf\Event;
 use Core\AbstractInterface\AbstractController;
 use Core\AbstractInterface\AbstractRouter;
 use Core\Component\Di;
 use Core\Component\SysConst;
-use Core\Http\Request\Request;
-use Core\Http\Response\Response;
+use Core\Http\Request;
+use Core\Http\Response;
 use Core\Component\SuperClosure;
-use Core\Http\Status;
+use Core\Http\Message\Status;
 use FastRoute\Dispatcher\GroupCountBased;
 use Core\Component\RouteCollector;
 
@@ -45,14 +44,14 @@ class Dispatcher
             return;
         }
         $pathInfo = UrlParser::pathInfo();
-        $routeInfo = $this->fastRouter($pathInfo,Request::getInstance()->getServer("REQUEST_METHOD"));
+        $routeInfo = $this->fastRouter($pathInfo,$request->getMethod());
         if($routeInfo !== false){
             switch ($routeInfo[0]) {
                 case \FastRoute\Dispatcher::NOT_FOUND:
                     // ... 404 NdoDispatcherot Found
                     break;
                 case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                    $response->sendHttpStatus(Status::CODE_METHOD_NOT_ALLOWED);
+                    $response->withStatus(Status::CODE_METHOD_NOT_ALLOWED);
                     break;
                 case \FastRoute\Dispatcher::FOUND:
                     $handler = $routeInfo[1];
@@ -112,7 +111,7 @@ class Dispatcher
             $actionName = $actionName ? $actionName : "index";
             $controller = new $finalClass;
             if($controller instanceof AbstractController){
-                Event::getInstance()->onDispatcher($request,$response,$finalClass,$actionName);
+//                Event::getInstance()->onDispatcher($request,$response,$finalClass,$actionName);
                 //预防在进控制器之前已经被拦截处理
                 if(!$response->isEndResponse()){
                     $controller->actionName($actionName);
@@ -124,11 +123,11 @@ class Dispatcher
                     }
                 }
             }else{
-                Response::getInstance()->sendHttpStatus(Status::CODE_NOT_FOUND);
+                Response::getInstance()->withStatus(Status::CODE_NOT_FOUND);
                 trigger_error("controller {$finalClass} is not a instance of AbstractController");
             }
         }else{
-            Response::getInstance()->sendHttpStatus(Status::CODE_NOT_FOUND);
+            Response::getInstance()->withStatus(Status::CODE_NOT_FOUND);
             trigger_error("default controller Index not implement");
         }
     }

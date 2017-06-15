@@ -17,7 +17,7 @@ class Index extends AbstractController
     function index()
     {
         // TODO: Implement index() method.
-        $this->response()->sendHeader("Content-type","text/html;charset=utf-8");
+//        $this->response()->sendHeader("Content-type","text/html;charset=utf-8");
         $this->response()->write('
     <style type="text/css">
         *{ padding: 0; margin: 0; } 

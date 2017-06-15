@@ -15,11 +15,10 @@ use Core\AbstractInterface\ErrorHandlerInterface;
 use Core\AbstractInterface\ExceptionHandlerInterface;
 use Core\Component\Di;
 use Core\Component\ErrorHandler;
-use Core\Component\Logger;
 use Core\Component\Spl\SplError;
 use Core\Component\SysConst;
-use Core\Http\Request\Request;
-use Core\Http\Response\Response;
+use Core\Http\Request;
+use Core\Http\Response;
 
 class Core
 {
@@ -53,7 +52,6 @@ class Core
         $request = Request::getInstance();
         $response = Response::getInstance();
         Event::getInstance()->onRequest($request,$response);
-
         Dispatcher::getInstance()->dispatch($request,$response);
         $response->end();
         Event::getInstance()->afterResponse($request,$response);

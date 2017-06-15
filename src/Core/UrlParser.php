@@ -10,14 +10,13 @@
 
 
 
-    use Core\Http\Request\Request;
+    use Core\Http\Message\Uri;
+    use Core\Http\Request;
 
 	class UrlParser
 	{
         static public function pathInfo(){
-            $httpRequest = Request::getInstance();
-            //优先检测pathinfo模式  否则用uri路径覆盖
-            $pathInfo = $httpRequest->getServer("REDIRECT_URL") ? $httpRequest->getServer("REDIRECT_URL") : '/';
+            $pathInfo = Request::getInstance()->getUri()->getPath();
             $basePath = dirname($pathInfo);
             $info = pathInfo($pathInfo);
             if($info['filename'] != 'index'){
@@ -29,5 +28,13 @@
             }
             return $basePath;
         }
-
+        static public function Uri(){
+            $url  = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '')
+                . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+            $uri = new Uri($url);
+            if(isset($_SERVER['PHP_AUTH_USER'])){
+                $uri->withUserInfo($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']);
+            }
+            return $uri;
+        }
 	}

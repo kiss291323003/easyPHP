@@ -10,14 +10,16 @@ namespace Conf;
 
 
 use Core\AbstractInterface\AbstractEvent;
-use Core\Http\Request\Request;
-use Core\Http\Response\Response;
+use Core\Component\Spl\SplError;
+use Core\Http\Request;
+use Core\Http\Response;
 
 class Event extends AbstractEvent
 {
     function frameInitialize()
     {
         // TODO: Implement frameInitialize() method.
+        date_default_timezone_set("Asia/Shanghai");
     }
 
     function onRequest(Request $request, Response $response)
@@ -34,5 +36,11 @@ class Event extends AbstractEvent
     {
         // TODO: Implement afterResponse() method.
     }
+
+    function onFatalError(SplError $error, $debugTrace)
+    {
+        // TODO: Implement onFatalError() method.
+    }
+
 
 }
