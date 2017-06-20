@@ -32,7 +32,7 @@ class Request extends ServerRequest
     function __construct()
     {
         $this->initHeaders();
-        $uri =  $this->getUri();
+        $uri =  $this->initUri();
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
         $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']) : '1.1';
         $body = new Stream(fopen("php://input","r+"));
