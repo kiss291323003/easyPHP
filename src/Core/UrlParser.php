@@ -17,7 +17,7 @@
 	{
         static public function pathInfo(){
             $pathInfo = Request::getInstance()->getUri()->getPath();
-            $basePath = dirname($pathInfo);
+            $basePath = str_replace('\\','/',dirname($pathInfo));//if in windows
             $info = pathInfo($pathInfo);
             if($info['filename'] != 'index'){
                 if($basePath == '/'){
