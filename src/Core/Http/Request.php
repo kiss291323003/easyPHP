@@ -14,6 +14,7 @@ use Core\Http\Message\Stream;
 use Core\Http\Message\UploadFile;
 use Core\Http\Message\Uri;
 use Core\UrlParser;
+use Core\Utility\Validate\Validate;
 
 class Request extends ServerRequest
 {
@@ -50,6 +51,9 @@ class Request extends ServerRequest
         }else{
             return array_merge($this->getParsedBody(),$this->getQueryParams());
         }
+    }
+    function requestParamsValidate(Validate $validate){
+        return $validate->validate($this->getRequestParam());
     }
     private function initUri(){
         $url  = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '')
