@@ -70,7 +70,7 @@ class Response extends HttpResponse
             return false;
         }
     }
-    function writeJson($result,$statusCode = 200,$msg = ''){
+    function writeJson($statusCode = 200,$result,$msg = ''){
         if(!$this->isEndResponse()){
             $this->getBody()->rewind();
             $data = Array(
