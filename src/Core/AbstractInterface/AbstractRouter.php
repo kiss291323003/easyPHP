@@ -8,15 +8,23 @@
 
 namespace Core\AbstractInterface;
 
-use Core\Component\RouteCollector;
+use Core\Component\Di;
+use Core\Component\SysConst;
+use Core\Http\Request;
+use Core\Http\Response;
+use FastRoute\DataGenerator\GroupCountBased;
+use FastRoute\RouteCollector;
+use FastRoute\RouteParser\Std;
 
 abstract class AbstractRouter
 {
     protected $isCache = false;
     protected $cacheFile;
+    protected $routeCollector;
     function __construct()
     {
-        $this->addRouter(RouteCollector::getInstance());
+        $this->routeCollector = new RouteCollector(new Std(),new GroupCountBased());
+        $this->addRouter($this->routeCollector);
     }
 
     abstract function addRouter(RouteCollector $routeCollector);
@@ -28,7 +36,8 @@ abstract class AbstractRouter
     function enableCache($cacheFile = null){
         $this->isCache = true;
         if($cacheFile === null){
-            $this->cacheFile = ROOT."/Temp/router.cache";
+            $temp = Di::getInstance()->get(SysConst::TEMP_DIRECTORY);
+            $this->cacheFile = ROOT."/{$temp}/router.cache";
         }else{
             /*
              * suggest to set a file in memory path ，such as
@@ -47,5 +56,14 @@ abstract class AbstractRouter
         }else{
             return false;
         }
+    }
+    function request(){
+        return Request::getInstance();
+    }
+    function response(){
+        return Response::getInstance();
+    }
+    function getRouteCollector(){
+        return $this->routeCollector;
     }
 }

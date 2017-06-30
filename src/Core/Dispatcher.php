@@ -143,10 +143,10 @@ class Dispatcher
                 if($is){
                     $is = $is.".{$this->appDirectory}";
                     if(file_exists($is)){
-                        $dispatcherData = require_once "{$is}";
+                        $dispatcherData = file_get_contents($is);
                         $dispatcherData = unserialize($dispatcherData);
                     }else{
-                        $dispatcherData =  RouteCollector::getInstance()->getData();
+                        $dispatcherData =  $router->getData();
                         $cache =  $dispatcherData;
                         /*
                          * to support closure
@@ -158,13 +158,13 @@ class Dispatcher
                         });
                         file_put_contents(
                             $is,
-                            "<?php return '" . serialize($cache) . "';"
+                            serialize($cache)
                         );
                     }
                     $fastRouterDispatcher = new GroupCountBased($dispatcherData);
                     return $fastRouterDispatcher->dispatch($requestMethod,$pathInfo);
                 }else{
-                    $fastRouterDispatcher = new GroupCountBased(RouteCollector::getInstance()->getData());
+                    $fastRouterDispatcher = new GroupCountBased($router->getData());
                     return $fastRouterDispatcher->dispatch($requestMethod,$pathInfo);
                 }
             }
