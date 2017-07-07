@@ -119,7 +119,7 @@ class Dispatcher
                     //同上
                     if(!$response->isEndResponse()){
                         $controller->$actionName();
-                        $controller->afterResponse();
+                        $controller->afterAction();
                     }
                 }
             }else{
