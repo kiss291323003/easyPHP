@@ -53,8 +53,21 @@ class Core
         $response = Response::getInstance();
         Event::getInstance()->onRequest($request,$response);
         Dispatcher::getInstance()->dispatch($request,$response);
-        $response->end();
-        Event::getInstance()->afterResponse($request,$response);
+        $status = $response->getStatusCode();
+        $reason = $response->getReasonPhrase();
+        //状态码有固定格式。
+        header('HTTP/1.1 '.$status.' '.$reason);
+        // 确保FastCGI模式下正常
+        header('Status:'.$status.' '.$reason);
+        $headers = $response->getHeaders();
+        foreach ($headers as $header => $val){
+            foreach ($val as $sub){
+                header($header .':'.$sub);
+            }
+        }
+        echo $response->getBody()->__toString();
+        $response->getBody()->close();
+        Event::getInstance()->onResponse($request,$response);
     }
 
     /*

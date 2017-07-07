@@ -32,7 +32,7 @@ class Event extends AbstractEvent
         // TODO: Implement onDispatcher() method.
     }
 
-    function afterResponse(Request $request, Response $response)
+    function onResponse(Request $request, Response $response)
     {
         // TODO: Implement afterResponse() method.
     }
@@ -41,6 +41,4 @@ class Event extends AbstractEvent
     {
         // TODO: Implement onFatalError() method.
     }
-
-
 }

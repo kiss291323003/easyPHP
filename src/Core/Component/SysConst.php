@@ -24,4 +24,6 @@ class SysConst
 
     const SHARE_MEMORY_FILE = 'SHARE_MEMORY_FILE';
     const TEMP_DIRECTORY = 'TEMP_DIRECTORY';
+
+    const VERSION_CONTROL = 'VERSION_CONTROL';
 }

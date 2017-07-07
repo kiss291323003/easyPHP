@@ -11,6 +11,7 @@ use Conf\Event;
 use Core\Dispatcher;
 use Core\Http\Message\Response as HttpResponse;
 use Core\Http\Message\Status;
+use Core\UrlParser;
 
 class Response extends HttpResponse
 {
@@ -29,20 +30,6 @@ class Response extends HttpResponse
     function end(){
         if(!$this->isEndResponse){
             $this->isEndResponse = 1;
-            $status = $this->getStatusCode();
-            $reason = $this->getReasonPhrase();
-            //状态码有固定格式。
-            header('HTTP/1.1 '.$status.' '.$reason);
-            // 确保FastCGI模式下正常
-            header('Status:'.$status.' '.$reason);
-            $headers = $this->getHeaders();
-            foreach ($headers as $header => $val){
-                foreach ($val as $sub){
-                    header($header .':'.$sub);
-                }
-            }
-            echo $this->getBody()->__toString();
-            $this->getBody()->close();
             return true;
         }else{
             return false;
@@ -127,15 +114,18 @@ class Response extends HttpResponse
     }
     function forward($pathTo,array $attribute = array()){
         if(!$this->isEndResponse()){
-            $request = Request::getInstance();
-            $response = Response::getInstance();
-            $request->getUri()->withPath($pathTo);
-            foreach ($attribute as $key => $value){
-                $request->withAttribute($key,$value);
+            if($pathTo == UrlParser::pathInfo()){
+                trigger_error("you can not forward a request in the same path : {$pathTo}");
+            }else{
+                $request = Request::getInstance();
+                $request->getUri()->withPath($pathTo);
+                $response = Response::getInstance();
+                foreach ($attribute as $key => $value){
+                    $request->withAttribute($key,$value);
+                }
+                Event::getInstance()->onRequest($request,$response);
+                Dispatcher::getInstance()->dispatch($request,$response);
             }
-            //执行OnRequest事件
-            Event::getInstance()->onRequest($request,$response);
-            Dispatcher::getInstance()->dispatch($request,$response);
         }else{
             trigger_error("response has end");
         }
