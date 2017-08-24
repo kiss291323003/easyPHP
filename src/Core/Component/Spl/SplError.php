@@ -18,7 +18,7 @@ class SplError extends SplBean
     protected $file;
     protected $line;
     protected $context;
-    protected $trace;
+
     const ERROR_TYPE_FATAL_ERROR = 'FATAL ERROR';
     const ERROR_TYPE_WARING = 'WARING';
     const ERROR_TYPE_NOTICE = 'NOTICE';
@@ -137,21 +137,7 @@ class SplError extends SplBean
         $this->context = $context;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTrace()
-    {
-        return $this->trace;
-    }
 
-    /**
-     * @param mixed $trace
-     */
-    public function setTrace($trace)
-    {
-        $this->trace = $trace;
-    }
 
 
     /**
@@ -203,8 +189,9 @@ class SplError extends SplBean
         return "{$this->errorType} : {$this->description} in file {$this->file} in line {$this->line}";
     }
 
-    function initialize()
+    protected function initialize()
     {
         // TODO: Implement initialize() method.
     }
+
 }

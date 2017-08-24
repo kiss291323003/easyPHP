@@ -41,17 +41,31 @@ class Request extends ServerRequest
         parent::__construct($method, $uri, null, $body, $protocol, $_SERVER);
         $this->withCookieParams($_COOKIE)->withQueryParams($_GET)->withParsedBody($_POST)->withUploadedFiles($files);
     }
-    function getRequestParam($keyOrKeys = null){
+    function getRequestParam($keyOrKeys = null, $default = null){
         if($keyOrKeys !== null){
             if(is_string($keyOrKeys)){
                 $ret = $this->getParsedBody($keyOrKeys);
-                if(empty($ret)){
+                if($ret === null){
                     $ret = $this->getQueryParam($keyOrKeys);
+                    if ($ret === null){
+                        if ($default !== null){
+                            $ret = $default;
+                        }
+                    }
                 }
                 return $ret;
             }else if(is_array($keyOrKeys)){
+                if (!is_array($default)){
+                    $default = array();
+                }
                 $data = $this->getRequestParam();
-                return array_intersect_key($data, array_flip($keyOrKeys));
+                $keysNull = array_fill_keys(array_values($keyOrKeys), null);
+                if($keysNull === null){
+                    $keysNull = [];
+                }
+                $all =  array_merge($keysNull, $default, $data);
+                $all = array_intersect_key($all, $keysNull);
+                return $all;
             }else{
                 return null;
             }

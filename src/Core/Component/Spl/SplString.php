@@ -44,13 +44,12 @@ class SplString
     }
 
     function toUtf8(){
-        return $this->encodingConvert("UTF-8");
+        return  $this->encodingConvert("UTF-8");
     }
-
 
     /*
      * special function for unicode
-    */
+     */
     function unicodeToUtf8(){
         $this->rawString =  preg_replace_callback(
             '/\\\\u([0-9a-f]{4})/i',
@@ -80,8 +79,8 @@ class SplString
         return $this;
     }
     /*
-    * special function for unicode end
-   */
+     * special function for unicode end
+    */
 
     function explode($separator){
         return new SplArray(explode($separator,$this->rawString));
@@ -140,14 +139,7 @@ class SplString
         $this->rawString = str_replace($find,$replaceTo,$this->rawString);
         return $this;
     }
-    function exist($find,$ignoreCase = true){
-        if($ignoreCase){
-            $label = stripos($this->rawString,$find);
-        }else{
-            $label = strpos($this->rawString,$find);
-        }
-        return $label === false ? false : true;
-    }
+
 
     function betweenInStr($startStr,$endStr){
         $st =stripos($this->rawString,$startStr);
@@ -173,6 +165,14 @@ class SplString
         }
     }
 
+    function exist($find,$ignoreCase = true){
+        if($ignoreCase){
+            $label = stripos($this->rawString,$find);
+        }else{
+            $label = strpos($this->rawString,$find);
+        }
+        return $label === false ? false : true;
+    }
     function __toString()
     {
         // TODO: Implement __toString() method.

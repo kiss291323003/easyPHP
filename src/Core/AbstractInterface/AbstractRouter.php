@@ -20,7 +20,7 @@ abstract class AbstractRouter
 {
     protected $isCache = false;
     protected $cacheFile;
-    protected $routeCollector;
+    private $routeCollector;
     function __construct()
     {
         $this->routeCollector = new RouteCollector(new Std(),new GroupCountBased());
@@ -57,13 +57,13 @@ abstract class AbstractRouter
             return false;
         }
     }
+    function getRouteCollector(){
+        return $this->routeCollector;
+    }
     function request(){
         return Request::getInstance();
     }
     function response(){
         return Response::getInstance();
-    }
-    function getRouteCollector(){
-        return $this->routeCollector;
     }
 }

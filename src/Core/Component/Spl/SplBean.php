@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: yf
  * Date: 2017/4/29
- * Time: 下午2:00
+ * Time: 下午1:54
  */
 
 namespace Core\Component\Spl;
@@ -63,7 +63,6 @@ abstract class SplBean implements \JsonSerializable
             return $ret;
         }
     }
-
 
     function arrayToBean(array $data){
         $data = array_intersect_key($data,array_flip($this->__varList));

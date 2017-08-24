@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: yf
- * Date: 2017/3/18
- * Time: 下午8:42
+ * Date: 2017/3/19
+ * Time: 上午9:51
  */
 
 namespace Core\Component;
@@ -11,6 +11,7 @@ namespace Core\Component;
 
 use Core\AbstractInterface\ErrorHandlerInterface;
 use Core\Component\Spl\SplError;
+use Core\Http\Request;
 use Core\Http\Response;
 
 class ErrorHandler implements ErrorHandlerInterface
@@ -24,12 +25,17 @@ class ErrorHandler implements ErrorHandlerInterface
     function display(SplError $error)
     {
         // TODO: Implement display() method.
-        Response::getInstance()->write($error->__toString());
+        if(Request::getInstance()){
+            Response::getInstance()->write($error->__toString());
+        }else{
+            Logger::getInstance()->console($error,0);
+        }
+
     }
 
     function log(SplError $error)
     {
         // TODO: Implement log() method.
-        Logger::log($error);
+        Logger::getInstance()->log($error);
     }
 }

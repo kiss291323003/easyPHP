@@ -38,7 +38,7 @@ class SplArray extends \ArrayObject
     }
 
     function set($path,$value){
-        $path = (new SplString($path))->explode(".")->getArrayCopy();
+        $path = explode(".",$path);
         $temp = $this;
         while ($key = array_shift($path)){
             $temp = &$temp[$key];
@@ -46,17 +46,42 @@ class SplArray extends \ArrayObject
         $temp = $value;
     }
 
-    function get($path){
-        $paths = (new SplString($path))->explode(".")->getArrayCopy();
-        $temp = $this->getArrayCopy();
-        foreach ($paths as $path){
-            if(isset($temp[$path])){
-                $temp = $temp[$path];
+    function get($path,$security = false){
+        $paths = explode(".",$path);
+        $func = function ($data,$pathArr,$security = false)use(&$func){
+            $path = array_shift($pathArr);
+            if($path == "*"){
+                if($security){
+                    if(isset($data['*'])){
+                        return $data["*"];
+                    }
+                }
+                if(!empty($pathArr)){
+                    $temp = [];
+                    foreach ($data as $key => $item){
+                        if(is_array($item)){
+                            $temp[$key] = $func($item,$pathArr,$security);
+                        }
+                        //对于非数组无下级则不再搜索
+                    }
+                    return $temp;
+                }else{
+                    return $data;
+                }
             }else{
-                return null;
+                if(isset($data[$path])){
+                    if(!empty($pathArr)){
+                        //继续搜索。
+                        return $func($data[$path],$pathArr,$security);
+                    }else{
+                        return $data[$path];
+                    }
+                }else{
+                    return null;
+                }
             }
-        }
-        return $temp;
+        };
+        return $func($this->getArrayCopy(),$paths,$security);
     }
 
 
@@ -65,5 +90,4 @@ class SplArray extends \ArrayObject
         // TODO: Implement __toString() method.
         return json_encode($this,JSON_UNESCAPED_UNICODE,JSON_UNESCAPED_SLASHES);
     }
-
 }
